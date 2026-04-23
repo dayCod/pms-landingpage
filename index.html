@@ -3,9 +3,617 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Page Title</title>
+    <title>PropX - Property Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #3b82f6, #1d4ed8);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #2563eb, #1e40af);
+        }
+
+        /* Glassmorphism Navbar */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        /* Mesh Gradient Background */
+        .mesh-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mesh-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.5) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.5) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(29, 78, 216, 0.5) 0%, transparent 50%);
+            animation: meshMove 20s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes meshMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Glow Effect */
+        .glow-button {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glow-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .glow-button:hover::before {
+            left: 100%;
+        }
+
+        /* Card Hover Effects */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navbar Hide/Show */
+        .nav-hidden {
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-visible {
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        /* Pricing Card Featured */
+        .pricing-featured {
+            transform: scale(1.05);
+            border: 2px solid #3b82f6;
+        }
+    </style>
 </head>
-<body>
-    Hello World!
+<body class="bg-gray-50">
+    <!-- Floating Navbar -->
+    <nav id="navbar" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-11/12 max-w-6xl glass-nav rounded-full px-6 py-4 nav-visible">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-building text-blue-500 text-2xl"></i>
+                <span class="text-xl font-bold text-gray-800">PropX</span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="text-gray-700 hover:text-blue-600 transition">Features</a>
+                <a href="#benefits" class="text-gray-700 hover:text-blue-600 transition">Benefits</a>
+                <a href="#pricing" class="text-gray-700 hover:text-blue-600 transition">Pricing</a>
+                <a href="#contact" class="text-gray-700 hover:text-blue-600 transition">Contact</a>
+            </div>
+            
+            <button class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-full hover:shadow-lg transition glow-button">
+                Get Started
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="mesh-gradient min-h-screen flex items-center justify-center pt-24 relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-white reveal">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                        Manage Properties Like Never Before
+                    </h1>
+                    <p class="text-xl mb-8 text-gray-100">
+                        AI-powered automation that transforms property management. Save time, reduce costs, and scale your business effortlessly.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:shadow-2xl transition glow-button">
+                            Start Free Trial
+                        </button>
+                        <button class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition">
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="reveal float-animation">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop" 
+                         alt="Dashboard Mockup" 
+                         class="rounded-2xl shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 reveal">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">10K+</div>
+                    <div class="text-gray-600">Properties</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">50K+</div>
+                    <div class="text-gray-600">Users</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">99.9%</div>
+                    <div class="text-gray-600">Uptime</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">24/7</div>
+                    <div class="text-gray-600">Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Powerful Features</h2>
+                <p class="text-xl text-gray-600">Everything you need to manage properties efficiently</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg card-hover reveal">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-robot text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">AI Automation</h3>
+                    <p class="text-gray-600">Automate repetitive tasks with intelligent AI that learns from your workflow patterns.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg card-hover reveal">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Real-Time Analytics</h3>
+                    <p class="text-gray-600">Get instant insights with comprehensive dashboards and detailed reporting tools.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg card-hover reveal">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-users text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Tenant Portal</h3>
+                    <p class="text-gray-600">Empower tenants with self-service portal for payments, maintenance requests, and more.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg card-hover reveal">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Mobile First</h3>
+                    <p class="text-gray-600">Manage properties on the go with our fully responsive mobile application.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg card-hover reveal">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Bank-Level Security</h3>
+                    <p class="text-gray-600">Enterprise-grade encryption and security protocols to protect your sensitive data.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg card-hover reveal">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-plug text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Seamless Integration</h3>
+                    <p class="text-gray-600">Connect with your favorite tools and services through our robust API.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="reveal">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-8">Why Choose PropX?</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Save 10+ Hours Per Week</h3>
+                                <p class="text-gray-600">Automate routine tasks and focus on growing your business instead of managing paperwork.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Reduce Operational Costs by 40%</h3>
+                                <p class="text-gray-600">Streamline operations and eliminate unnecessary expenses with intelligent automation.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Increase Tenant Satisfaction</h3>
+                                <p class="text-gray-600">Provide better service with faster response times and transparent communication.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reveal">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=600&fit=crop" 
+                         alt="Benefits" 
+                         class="rounded-2xl shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Simple, Transparent Pricing</h2>
+                <p class="text-xl text-gray-600">Choose the plan that fits your needs</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Starter Plan -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg card-hover reveal">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Starter</h3>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-gray-800">$29</span>
+                        <span class="text-gray-600">/month</span>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">Up to 10 properties</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">Basic analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">Email support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">Mobile app access</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gray-200 text-gray-800 py-3 rounded-full font-semibold hover:bg-gray-300 transition">
+                        Get Started
+                    </button>
+                </div>
+                
+                <!-- Professional Plan (Featured) -->
+                <div class="bg-white p-8 rounded-2xl shadow-2xl card-hover reveal pricing-featured relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                        Most Popular
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Professional</h3>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-blue-600">$79</span>
+                        <span class="text-gray-600">/month</span>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">Up to 50 properties</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">Advanced analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">Priority support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">AI automation</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">API access</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 rounded-full font-semibold hover:shadow-lg transition glow-button">
+                        Get Started
+                    </button>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg card-hover reveal">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Enterprise</h3>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-gray-800">Custom</span>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">Unlimited properties</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">Custom analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">24/7 dedicated support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">White-label solution</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-gray-600">Custom integrations</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gray-200 text-gray-800 py-3 rounded-full font-semibold hover:bg-gray-300 transition">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-blue-500 to-blue-800">
+        <div class="container mx-auto px-6 text-center reveal">
+            <h2 class="text-4xl font-bold text-white mb-6">Ready to Transform Your Property Management?</h2>
+            <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                Join thousands of property managers who are already saving time and money with PropX
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:shadow-2xl transition glow-button">
+                    Start Free Trial
+                </button>
+                <button class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition">
+                    Schedule Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-900 text-gray-300 py-16">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <!-- About -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-building text-blue-500 text-2xl"></i>
+                        <span class="text-xl font-bold text-white">PropX</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        The future of property management. Powered by AI, built for scale.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-blue-500 transition">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-blue-500 transition">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-blue-500 transition">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-blue-500 transition">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Product -->
+                <div>
+                    <h3 class="text-white font-bold mb-4">Product</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="hover:text-blue-500 transition">Features</a></li>
+                        <li><a href="#pricing" class="hover:text-blue-500 transition">Pricing</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Integrations</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">API</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Company -->
+                <div>
+                    <h3 class="text-white font-bold mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-blue-500 transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Careers</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Legal -->
+                <div>
+                    <h3 class="text-white font-bold mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-blue-500 transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Cookie Policy</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center">
+                <p class="text-gray-400">
+                    &copy; 2026 PropX. All rights reserved. Built with passion for property managers.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Reveal Animation
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', reveal);
+        reveal(); // Initial check
+
+        // Navbar Hide/Show on Scroll
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+        
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down
+                navbar.classList.remove('nav-visible');
+                navbar.classList.add('nav-hidden');
+            } else {
+                // Scrolling up
+                navbar.classList.remove('nav-hidden');
+                navbar.classList.add('nav-visible');
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax Effect for Hero Section
+        window.addEventListener('scroll', function() {
+            const hero = document.getElementById('hero');
+            const scrolled = window.pageYOffset;
+            
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Add loading animation
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
 </body>
 </html>
